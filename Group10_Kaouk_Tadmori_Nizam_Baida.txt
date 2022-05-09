@@ -1,0 +1,78 @@
+const byte interruptPin = 2;
+volatile byte state = HIGH;
+
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(3, INPUT);//define front-left input pin
+  pinMode(4, INPUT);
+  pinMode(5, INPUT);
+  pinMode(6, INPUT);
+  pinMode(7,OUTPUT);
+  pinMode(8,OUTPUT);
+  pinMode(9,OUTPUT);
+  pinMode(10,OUTPUT);
+  
+pinMode(interruptPin,INPUT_PULLUP);
+attachInterrupt(digitalPinToInterrupt(interruptPin),change_state,CHANGE);
+  
+}
+  
+void loop() {
+
+  int index_finger = digitalRead(3);// reads whether the sensor on the index finger is detecting 
+  int middle_finger = digitalRead(4);// reads whether the sensor on the middle finger is detecting
+  int ring_finger = digitalRead(5);// reads whether the sensor on the ring finger is detecting
+  int pinkie_finger = digitalRead(6);// reads whether the sensor on the pinkie finger is detecting
+
+ if (state){ 
+  
+    if (!index_finger){
+      digitalWrite(7, HIGH);
+    }
+    else{
+      digitalWrite(7,LOW);
+    }
+  //---------------------------------------
+    if (!middle_finger){
+      digitalWrite(8, HIGH);
+    }
+    else{
+      digitalWrite(8,LOW);
+    }
+  //---------------------------------------
+  
+    if (!ring_finger){
+      digitalWrite(9, HIGH);
+    }
+    else{
+      digitalWrite(9,LOW);
+    }
+  //-------------------------------------
+    if (!pinkie_finger){
+      digitalWrite(10, HIGH);
+   }
+    else{
+      digitalWrite(10,LOW);
+    }
+  //-------------------------------------
+
+    Serial.print(index_finger);
+    Serial.print("\t");
+    Serial.print(middle_finger);
+    Serial.print("\t");
+    Serial.print(ring_finger);
+    Serial.print("\t");
+    Serial.print(pinkie_finger);
+    Serial.print("\t\n");
+ }
+
+}
+
+//------------------------------------------
+void change_state() {
+  state = !state;
+}
+
+
+
